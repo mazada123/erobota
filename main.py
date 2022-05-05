@@ -10,7 +10,7 @@ import json
 import time
 from pyvirtualdisplay import Display
 
-LOCAL_PATH = '/home/erobota'
+LOCAL_PATH = ''
 REAL_LINK_WORK_UA = []
 
 WORK_UA = []
@@ -744,99 +744,99 @@ def parse_nowa_robota_ua():
         driver.quit()
 
 
-def remove_vacancy():
-    with open (LOCAL_PATH + "/delete_robota_ua_links.json") as file:
-        base_links = json.load(file)
-        delete_temp = []
-        l = 0
-        for item in base_links:
-            l += 1
-            clean_link = item['link'].replace(
-                'https://rabota.ua/', 'https://rabota.ua/ua/')
-            temp_el = {"link":f"{clean_link}"}
-            delete_temp.append(temp_el)
-            if l >= 100:
-                URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/remove/"
-                req = requests.post(URL_send, json=delete_temp)
-                print(req.text)
-                delete_temp.clear()
-                l = 0
-            else:
-                continue    
-    URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/remove/"
-    req = requests.post(URL_send, json=delete_temp)
-    print(req.text)
+# def remove_vacancy():
+#     with open (LOCAL_PATH + "/delete_robota_ua_links.json") as file:
+#         base_links = json.load(file)
+#         delete_temp = []
+#         l = 0
+#         for item in base_links:
+#             l += 1
+#             clean_link = item['link'].replace(
+#                 'https://rabota.ua/', 'https://rabota.ua/ua/')
+#             temp_el = {"link":f"{clean_link}"}
+#             delete_temp.append(temp_el)
+#             if l >= 100:
+#                 URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/remove/"
+#                 req = requests.post(URL_send, json=delete_temp)
+#                 print(req.text)
+#                 delete_temp.clear()
+#                 l = 0
+#             else:
+#                 continue    
+#     URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/remove/"
+#     req = requests.post(URL_send, json=delete_temp)
+#     print(req.text)
                
-    with open (LOCAL_PATH + "/delete_work_ua_links.json") as file:
-        base_links = json.load(file)
-        delete_temp = []
-        l = 0
-        for item in base_links:
-            l += 1
-            delete_temp.append(item)
-            if l >= 100:
-                URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/remove/"
-                req = requests.post(URL_send, json=delete_temp)
-                print(req.text)
-                delete_temp.clear()
-                l = 0
-            else:
-                continue
-    URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/remove/"
-    req = requests.post(URL_send, json=delete_temp)
-    print(req.text)
-    state = 9
-    return state  
+#     with open (LOCAL_PATH + "/delete_work_ua_links.json") as file:
+#         base_links = json.load(file)
+#         delete_temp = []
+#         l = 0
+#         for item in base_links:
+#             l += 1
+#             delete_temp.append(item)
+#             if l >= 100:
+#                 URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/remove/"
+#                 req = requests.post(URL_send, json=delete_temp)
+#                 print(req.text)
+#                 delete_temp.clear()
+#                 l = 0
+#             else:
+#                 continue
+#     URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/remove/"
+#     req = requests.post(URL_send, json=delete_temp)
+#     print(req.text)
+#     state = 9
+#     return state  
 
 
-def send_vacation():
-    with open(LOCAL_PATH + "/filtered_vac_work.json", 'r') as file:
-        all_filt_vac = json.load(file)
-        send_base = []
-        temp = 0
-        k = 0
-        for item in all_filt_vac:
-            temp += 1
-            if temp <= 100:
-                send_base.append(item)
-            else:
-                k += 1
-                print(f"Sending {k}/{round(len(all_filt_vac) / 100)} block")
-                URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/import/"
-                req = requests.post(URL_send, json=send_base)
-                print(req)
-                send_base.clear()
-                temp = 0
+# def send_vacation():
+#     with open(LOCAL_PATH + "/filtered_vac_work.json", 'r') as file:
+#         all_filt_vac = json.load(file)
+#         send_base = []
+#         temp = 0
+#         k = 0
+#         for item in all_filt_vac:
+#             temp += 1
+#             if temp <= 100:
+#                 send_base.append(item)
+#             else:
+#                 k += 1
+#                 print(f"Sending {k}/{round(len(all_filt_vac) / 100)} block")
+#                 URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/import/"
+#                 req = requests.post(URL_send, json=send_base)
+#                 print(req)
+#                 send_base.clear()
+#                 temp = 0
 
-    print(f"Sending {k}/{round(len(all_filt_vac) / 100)} block")
-    URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/import/"
-    req = requests.post(URL_send, json=send_base)
-    print(req)
+#     print(f"Sending {k}/{round(len(all_filt_vac) / 100)} block")
+#     URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/import/"
+#     req = requests.post(URL_send, json=send_base)
+#     print(req)
 
-    with open(LOCAL_PATH + "/filtered_vac_robota_ua.json", 'r') as file:
-        all_filt_vac = json.load(file)
-        send_base = []
-        temp = 0
-        k = 0
-        for item in all_filt_vac:
-            temp += 1
-            if temp <= 100:
-                send_base.append(item)
-            else:
-                k += 1
-                print(f"Sending {k}/{round(len(all_filt_vac) / 100)} block")
-                URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/import/"
-                req = requests.post(URL_send, json=send_base)
-                print(req)
-                send_base.clear()
-                temp = 0 
+#     with open(LOCAL_PATH + "/filtered_vac_robota_ua.json", 'r') as file:
+#         all_filt_vac = json.load(file)
+#         send_base = []
+#         temp = 0
+#         k = 0
+#         for item in all_filt_vac:
+#             temp += 1
+#             if temp <= 100:
+#                 send_base.append(item)
+#             else:
+#                 k += 1
+#                 print(f"Sending {k}/{round(len(all_filt_vac) / 100)} block")
+#                 URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/import/"
+#                 req = requests.post(URL_send, json=send_base)
+#                 print(req)
+#                 send_base.clear()
+#                 temp = 0 
 
-    print(f"Sending {k}/{round(len(all_filt_vac) / 100)} block")
-    URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/import/"
-    req = requests.post(URL_send, json=send_base)
-    print(req)
-    state = 10
-    return state                       
+#     print(f"Sending {k}/{round(len(all_filt_vac) / 100)} block")
+#     URL_send = "https://us-central1-erobota-ua.cloudfunctions.net/api/vacancies/import/"
+#     req = requests.post(URL_send, json=send_base)
+#     print(req)
+#     state = 10
+#     return state                       
 
 
 
@@ -870,10 +870,10 @@ if __name__ == "__main__":
                 state = parse_single_robota_ua()
             elif state == 7:     
                 state = formating_data_robota_ua()
-            elif state == 8:
-                state = remove_vacancy()
-            elif state == 9:    
-                state = send_vacation()
+            # elif state == 8:
+            #     state = remove_vacancy()
+            # elif state == 9:    
+            #     state = send_vacation()
             elif state == 10:
                 state = finish()
     except Exception as err:
